@@ -1,0 +1,217 @@
+# INVENTORY MANAGEMENT SYSTEM
+
+inventory = []
+next_id = 101
+
+
+# MAIN MENU
+while True:
+
+    print("\n===== INVENTORY MANAGEMENT SYSTEM =====")
+    print("1. Add Item")
+    print("2. View Items")
+    print("3. Update Item")
+    print("4. Delete Item")
+    print("5. Total Stock Value")
+    print("6. Low Stock Report")
+    print("7. Search Item")
+    print("8. Exit")
+
+    choice = input("Enter your choice: ")
+
+
+    # TO ADD ITEM
+    if choice == "1":
+
+        name = input("Enter Item Name: ")
+
+        try:
+            quantity = int(input("Enter Quantity: "))
+            price = float(input("Enter Price: "))
+
+            if quantity < 0:
+                print("Invalid quantity. Quantity must be a non-negative whole number.")
+
+            elif price < 0:
+                print("Invalid Price.")
+
+            else:
+                item = {
+                    "id": "I" + str(next_id),
+                    "name": name,
+                    "quantity": quantity,
+                    "price": price
+                }
+
+                inventory.append(item)
+
+                print("\nItem added.")
+                print("ID:", item["id"],
+                      "|", item["name"],
+                      "| Qty:", item["quantity"],
+                      "| Price:", item["price"])
+
+                if quantity < 5:
+                    print("Low Stock ALERT:",
+                          name, "(" + str(quantity) + ")")
+
+                next_id = next_id + 1
+
+        except ValueError:
+            print("Invalid input. Please enter valid numbers.")
+
+
+    # TO VIEW ITEMS
+    elif choice == "2":
+
+        if len(inventory) == 0:
+            print("Inventory Is Empty")
+
+        else:
+            print("\nID\tName\t\tQuantity\tPrice")
+            print("---------------------------------------------")
+
+            for item in inventory:
+                print(item["id"], "\t",
+                      item["name"], "\t\t",
+                      item["quantity"], "\t\t",
+                      item["price"])
+
+
+    # TO UPDATE ITEM
+    elif choice == "3":
+
+        item_id = input("Enter Item ID to UPDATE: ")
+        found = False
+
+        for item in inventory:
+
+            if item["id"] == item_id:
+
+                found = True
+
+                try:
+                    new_quantity = int(input("Enter New Quantity: "))
+                    new_price = float(input("Enter New Price: "))
+
+                    if new_quantity < 0:
+                        print("Invalid Quantity.")
+
+                    elif new_price < 0:
+                        print("Invalid Price.")
+
+                    else:
+                        item["quantity"] = new_quantity
+                        item["price"] = new_price
+
+                        print("Item Updated Successfully.")
+
+                except ValueError:
+                    print("Invalid input. Please enter valid numbers.")
+
+                break
+
+        if found == False:
+            print("Item ID", item_id, "not found.")
+
+
+    # TO DELETE ITEM
+    elif choice == "4":
+
+        item_id = input("Enter Item ID to DELETE: ")
+        found = False
+
+        for item in inventory:
+
+            if item["id"] == item_id:
+
+                print("Item", item["name"], "deleted.")
+
+                inventory.remove(item)
+
+                found = True
+                break
+
+        if found == False:
+            print("Item ID", item_id, "not found.")
+
+        else:
+            print("Items left:", len(inventory))
+
+
+    # TO CALCULATE TOTAL STOCK VALUE
+    elif choice == "5":
+
+        total = 0
+
+        if len(inventory) == 0:
+            print("Inventory Is Empty")
+
+        else:
+
+            for item in inventory:
+
+                value = item["quantity"] * item["price"]
+
+                print(item["name"], ":", value)
+
+                total = total + value
+
+            print("Total Stock Value:", total)
+
+
+    # TO SHOW LOW STOCK ITEMS
+    elif choice == "6":
+
+        found = False
+
+        print("\nLow Stock Items (Below 5):")
+
+        for item in inventory:
+
+            if item["quantity"] < 5:
+
+                print(item["id"],
+                      "|", item["name"],
+                      "| Qty:", item["quantity"])
+
+                found = True
+
+        if found == False:
+            print("No Low Stock Items.")
+
+
+    # TO SEARCH ITEM
+    elif choice == "7":
+
+        item_id = input("Enter Item ID to SEARCH: ")
+        found = False
+
+        for item in inventory:
+
+            if item["id"] == item_id:
+
+                print("\nItem Found")
+                print("ID:", item["id"])
+                print("Name:", item["name"])
+                print("Quantity:", item["quantity"])
+                print("Price:", item["price"])
+
+                found = True
+                break
+
+        if found == False:
+            print("Item ID", item_id, "not found.")
+
+
+    # TO EXIT
+    elif choice == "8":
+
+        print("Inventory Management System Closed.")
+        break
+
+
+    # INVALID MENU CHOICE
+    else:
+
+        print("Invalid Choice. Enter a number from 1 to 8.")
